@@ -1,14 +1,14 @@
 # About cloudviz
 This package exposes Amazon CloudWatch as a data source for Google Chart Tools.  With it, you can quickly generate graphs like this:
-[RequestCount for ELB](http://mbabineau.github.com/cloudviz/example-elb-requestcount.png)
+![RequestCount for ELB](http://mbabineau.github.com/cloudviz/example-elb-requestcount.png)
 
 ## Getting started
 1. Familiarize yourself with:
-  * [Amazon CloudWatch](http://aws.amazon.com/cloudwatch/) ([docs](http://docs.amazonwebservices.com/AmazonCloudWatch/latest/DeveloperGuide/))
-  * [Google Visualization API](http://code.google.com/apis/visualization/interactive_charts.html) ([docs](http://code.google.com/apis/visualization/documentation/using_overview.html))
+   * [Amazon CloudWatch](http://aws.amazon.com/cloudwatch/) ([docs](http://docs.amazonwebservices.com/AmazonCloudWatch/latest/DeveloperGuide/))
+   * [Google Visualization API](http://code.google.com/apis/visualization/interactive_charts.html) ([docs](http://code.google.com/apis/visualization/documentation/using_overview.html))
 2. Download and install:
-  * [boto](http://code.google.com/p/boto/) - a Python interface for Amazon Web Services
-  * [gviz_api](http://code.google.com/p/google-visualization-python/) - a Python library for creating Google Visualization API data sources
+   * [boto](http://code.google.com/p/boto/) - a Python interface for Amazon Web Services
+   * [gviz_api](http://code.google.com/p/google-visualization-python/) - a Python library for creating Google Visualization API data sources
 3. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in config.py
 4. Make cloudviz.py web-accessible using your favorite HTTP server
 
