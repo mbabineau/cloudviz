@@ -75,5 +75,5 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --------------------------------------------------------
-Created by Mike Babineau [mike@bizo.com](mike@bizo.com)
+Created by Mike Babineau [mike@bizo.com](mike@bizo.com)<br>
 Copyright © 2010 [Bizo](http://bizo.com).  All rights reserved.
