@@ -52,7 +52,7 @@ Here's a JavaScript snippet for building a URL to pass to cloudviz.  See example
     var url = 'http://' + window.location.host + '/cloudviz?qs=' + qs;  // assumes cloudviz.py is called at /data
 
 The resulting URL should look something like this:
-http://localhost:8080/cloudviz?qs={%22namespace%22:%22AWS/EC2%22,%22metric%22:%22CPUUtilization%22,%22unit%22:%22Percent%22,%22statistics%22:[%22Average%22,%22Maximum%22],%22period%22:600,%22cloudwatch_queries%22:[{%22prefix%22:%22Instance%201%20CPU%20%22,%22dimensions%22:{%22InstanceId%22:%22i-bd14d3d5%22}},{%22prefix%22:%22Instance%202%20CPU%20%22,%22dimensions%22:{%22InstanceId%22:%22i-c514d3ad%22}}]}&tqx=reqId%3A0
+     http://localhost:8080/cloudviz?qs={%22namespace%22:%22AWS/EC2%22,%22metric%22:%22CPUUtilization%22,%22unit%22:%22Percent%22,%22statistics%22:[%22Average%22,%22Maximum%22],%22period%22:600,%22cloudwatch_queries%22:[{%22prefix%22:%22Instance%201%20CPU%20%22,%22dimensions%22:{%22InstanceId%22:%22i-bd14d3d5%22}},{%22prefix%22:%22Instance%202%20CPU%20%22,%22dimensions%22:{%22InstanceId%22:%22i-c514d3ad%22}}]}&tqx=reqId%3A0
 
 And the graph, when passed through Google's Visualization API:
 ![CPUUtilization for two instances](http://mbabineau.github.com/cloudviz/example-hosts-cpu.png)
