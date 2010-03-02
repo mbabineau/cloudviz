@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>ELB Healthy Host Count</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi" ></script>
+    <script type="text/javascript" src="json2-min.js" ></script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['annotatedtimeline']});
+    </script>
+    <script type="text/javascript">
+            var visualization;
+            
+            function drawVisualization() {
+                end_time = new Date;
+                start_time = new Date;
+                start_time.setDate(end_time.getDate()-14);
+//                start_time.setHours(end_time.getHours()-12);
+
+                var qa = {  
+                            "namespace": "AWS/ELB",
+                            "start_time": start_time,
+                            "end_time": end_time,
+                            "period": 3600,
+                            "statistics": ["Maximum"],
+                            "metric": "HealthyHostCount",
+                            "unit": "Count"
+                            "cloudwatch_queries":
+                            [
+                                {
+                                    "prefix": "dc healthy ",
+                                    "dimensions": { "LoadBalancerName": "example-elb-1"},
+                                },
+                                {
+                                    "prefix": "dc temp healthy ",
+                                    "dimensions": { "LoadBalancerName": "example-elb-2"},
+
+                                }
+                            ]
+                         };
+
+                var qs = JSON.stringify(qa);
+                var url = 'http://' + window.location.host + '/cloudviz?qs=' + qs;
+                var query = new google.visualization.Query(url);
+                //query.setQuery('select Timestamp,Average,Maximum order by Timestamp');
+                query.send(handleQueryResponse);
+        }
+    
+        function handleQueryResponse(response) {
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+            }
+        
+            var data = response.getDataTable();
+            visualization = new google.visualization.AnnotatedTimeLine(document.getElementById('healthyhostcount'));
+            visualization.draw(data, {  'displayAnnotations': false, 
+                                        'fill': 20,
+                                        'legendPosition': 'newRow'})
+        }
+        
+        google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <h2>ELB Healthy Host Count</h2>
+    <div id="healthyhostcount" style="width: 800px; height: 400px;"></div>
+  </body>
+</html>
+

@@ -1,0 +1,64 @@
+<!-- Don't forget to update LoadBalancerName -->
+<html>
+  <head>
+    <title>AutoScaling Group Network I/O</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi" ></script>
+    <script type="text/javascript" src="json2-min.js" ></script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['annotatedtimeline']});
+    </script>
+    <script type="text/javascript">
+        var visualization;
+        
+        function drawVisualization() {
+            // "start_time" and "end_time" are already defined in config.py:
+            //end_time = new Date;
+            //start_time = new Date;
+            //start_time.setDate(end_time.getDate()-1);
+            //end_time.setDate(end_time.getDate());
+            var qa = {  
+                        "namespace": "AWS/EC2",       // CloudWatch namespace (string
+                        "metric": "CPUUtilization",   // CloudWatch metric (string)
+                        "unit": "Percent",            // CloudWatch unit (string)
+                        "statistics": ["Average","Maximum"],      // CloudWatch statistics (list of strings)
+                        "period": 600,                // CloudWatch period (int)
+                        "cloudwatch_queries":         // (list of dictionaries)
+                        [   
+                            {
+                                "prefix": "Instance 1 CPU ",   // label prefix for associated data sets (string)
+                                "dimensions": { "InstanceId": "i-bd14d3d5"} // CloudWatch dimensions (dictionary)
+                            },
+                            {
+                                "prefix": "Instance 2 CPU ",
+                                "dimensions": { "InstanceId": "i-c514d3ad"}
+                            }
+                        ]
+                     };
+
+            var qs = JSON.stringify(qa);
+            var url = 'http://' + window.location.host + '/data?qs=' + qs;
+            var query = new google.visualization.Query(url);
+            query.send(handleQueryResponse);
+        }
+    
+        function handleQueryResponse(response) {
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+            }
+        
+            var data = response.getDataTable();
+            visualization = new google.visualization.AnnotatedTimeLine(document.getElementById('chart'));
+            visualization.draw(data, {  'displayAnnotations': false, 
+                                        'fill': 20,
+                                        'legendPosition': 'newRow',
+                                        'allValuesSuffix': '%'})
+        }
+        
+        google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="chart" style="width: 800px; height: 400px;"></div>
+  </body>
+</html>

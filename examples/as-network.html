@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>AutoScaling Group Network I/O</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi" ></script>
+    <script type="text/javascript" src="json2-min.js" ></script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['annotatedtimeline']});
+    </script>
+    <script type="text/javascript">
+            var visualization;
+            
+            function drawVisualization() {
+                var qa = {  
+                            "namespace": "AWS/EC2", // CloudWatch namespace (string)
+                            "unit": "Bytes",        // CloudWatch unit (string)
+                            "calc_rate": true,      // convert "Sum" statistics to units per second values (boolean)
+                            "dimensions": { "AutoScalingGroupName": "example-group"},
+                            "cloudwatch_queries":   // (list of dictionaries)
+                            [
+                                {
+                                    "prefix": "In ",       // label prefix for associated data sets (string)
+                                    "statistics": ["Sum"], // CloudWatch statistics (list of strings)
+                                    "metric": "NetworkIn"  // CloudWatch metric
+                                },
+                                                                
+                                {
+                                    "prefix": "Out ",
+                                    "statistics": ["Average"]
+                                    "metric": "NetworkOut"
+                                }
+                            ]
+                         };
+
+                var qs = JSON.stringify(qa);
+                var url = 'http://' + window.location.host + '/cloudviz?qs=' + qs;
+                var query = new google.visualization.Query(url);
+                query.send(handleQueryResponse);
+        }
+    
+        function handleQueryResponse(response) {
+            if (response.isError()) {
+                alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+            }
+        
+            var data = response.getDataTable();
+            visualization = new google.visualization.AnnotatedTimeLine(document.getElementById('chart'));
+            visualization.draw(data, {  'displayAnnotations': false, 
+                                        'fill': 20,
+                                        'legendPosition': 'newRow'})
+        }
+        
+        google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="chart" style="width: 800px; height: 400px;"></div>
+  </body>
+</html>
+
