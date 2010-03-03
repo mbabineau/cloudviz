@@ -9,8 +9,9 @@ This package exposes Amazon CloudWatch as a data source for Google Chart Tools. 
 2. Download and install:
    * [boto](http://code.google.com/p/boto/) - a Python interface for Amazon Web Services
    * [gviz_api](http://code.google.com/p/google-visualization-python/) - a Python library for creating Google Visualization API data sources
-3. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in config.py
-4. Make cloudviz.py web-accessible using your favorite HTTP server
+3. Copy/move config.py.template to config.py
+4. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in config.py
+5. Make cloudviz.py web-accessible using your favorite HTTP server
 
 # Using cloudviz
 cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in config.py:
