@@ -62,7 +62,7 @@ And the graph, when passed through Google's Visualization API:
 Additional examples can be found in examples/, and are written to act as plug-and-play templates.
 
 # Licensing
-Copyright 2010 [Bizo, Inc.](http://bizo.com) (Mike Babineau [mike@bizo.com](mike@bizo.com))
+Copyright 2010 [Bizo, Inc.](http://bizo.com) (Mike Babineau <[mike@bizo.com](mailto:mike@bizo.com)>)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
