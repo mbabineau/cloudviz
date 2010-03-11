@@ -48,6 +48,16 @@ def main():
     qs = FieldStorage()
     qa = simplejson.loads(qs.getvalue('qs'))
 
+    # Convert tqx to dict; tqx is a set of colon-delimited key/value pairs separated by semicolons
+    tqx = {}
+    for s in qs.getvalue('tqx').split(';'):
+        key = s.split(':')[0]
+        value = s.split(':')[1]
+        tqx.update({key:value})
+    
+    # Set reqId so we know who to send data back to
+    req_id = tqx['reqId']
+
     # Build option list
     opts = ['unit','metric','namespace','statistics','period', 'dimensions', 'prefix', 'start_time', 'end_time', 'calc_rate']
     
@@ -67,7 +77,7 @@ def main():
     cw_queries = qa['cloudwatch_queries']
     cw_opts = ['unit','metric','namespace','statistics','period','dimensions','prefix', 'calc_rate']
     for cw_q in cw_queries:
-        # Override lower-level vars
+        # Override top-level vars
         for opt in cw_opts:
             if opt in cw_q: args[opt] = cw_q[opt]
             
@@ -105,7 +115,7 @@ def main():
 
     print "Content-type: text/plain"
     print
-    print data_table.ToJSonResponse(columns_order=columns, order_by="Timestamp")
+    print data_table.ToJSonResponse(columns_order=columns, order_by="Timestamp", req_id=req_id)
 
 if __name__ == "__main__":
     main()
