@@ -16,20 +16,20 @@ This package exposes Amazon CloudWatch as a data source for Google Chart Tools. 
 # Using cloudviz
 cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in config.py:
 
-* namespace (str) - CloudWatch namespace (e.g., _"AWS/ELB"_)
-* metric (str) - CloudWatch metric (e.g., _"Latency"_)
-* unit (str) - CloudWatch init (e.g., _"Seconds"_)
-* statistics (list of str) - CloudWatch statistics (e.g., _["Average","Maximum"]_)
-* dimensions (dict of str) - CloudWatch dimensions (e.g., _{"LoadBalancerName": "example-lb"}_)
-* end_time (date) - end time for queried interval (e.g., _new Date_)
-* start_time (date) - start time for queried interval (e.g., _start_time.setDate(end_time.getDate)_)
-* period (int) - (note: must be 60 or greater) (e.g., _120_)
-* calc_rate (bool) - (optional) when set to _True_ and statistics includes _"Sum"_, cloudviz converts _Sum_ values to per-second _Rate_ values by dividing _Sum_ by seconds in _period_ (e.g., for _RequestCount_, 150 Requests per period / 60 seconds per period = 2.5 Requests per second)
-* cloudwatch_queries (list of dict) - encapsulates each CloudWatch query, allowing for multiple queries to be graphed in a single chart.  Minimally, cloudwatch_queries must contain one dict with prefix defined.  Optionally, any of the above parameters may also be defined inside one or more _cloudwatch_queries_
-  * prefix (str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)
+* __namespace __(str) - CloudWatch namespace (e.g., _"AWS/ELB"_)
+* __metric __(str) - CloudWatch metric (e.g., _"Latency"_)
+* __unit __(str) - CloudWatch unit (e.g., _"Seconds"_)
+* __statistics __(list of str) - CloudWatch statistics (e.g., _["Average","Maximum"]_)
+* __dimensions __(dict of str) - CloudWatch dimensions (e.g., _{"LoadBalancerName": "example-lb"}_)
+* __end_time __(date) - end time for queried interval (e.g., _new Date_)
+* __start_time __(date) - start time for queried interval (e.g., _start_time.setDate(end_time.getDate-3)_)
+* __period __(int) - (note: must be 60 or greater) (e.g., _120_)
+* __calc_rate __(bool) - (optional) when set to _True_ and **statistics** includes _"Sum"_, cloudviz converts _Sum_ values to per-second _Rate_ values by dividing _Sum_ by seconds in _period_ (e.g., for _RequestCount_, 150 Requests per period / 60 seconds per period = 2.5 Requests per second)
+* __cloudwatch_queries __(list of dict) - encapsulates each CloudWatch query, allowing for multiple queries to be graphed in a single chart.  Minimally, **cloudwatch_queries **must contain one dict with prefix defined.  Optionally, any of the above parameters may also be defined inside one or more **cloudwatch_queries **
+  * __prefix __(str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)
 
 ### Example: Graphing CPU utilization of two instances
-Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that _start_time_ and _end_time_ are set in config.py. 
+Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that **start_time **and **end_time **are set in config.py. 
 
     var qa = {  
                 "namespace": "AWS/EC2",       // CloudWatch namespace (string
