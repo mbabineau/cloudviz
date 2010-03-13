@@ -14,7 +14,7 @@ This package exposes Amazon CloudWatch as a data source for Google Chart Tools. 
 5. Make cloudviz.py web-accessible using your favorite HTTP server
 
 # Using cloudviz
-cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in config.py:
+cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in <code>config.py</code>:
 
 * __namespace __(str) - CloudWatch namespace (e.g., _"AWS/ELB"_)
 * __metric __(str) - CloudWatch metric (e.g., _"Latency"_)
@@ -29,7 +29,7 @@ cloudviz expects the following query parameters as a JSON-encoded string passed 
   * __prefix __(str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)
 
 ### Example: Graphing CPU utilization of two instances
-Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that **start_time **and **end_time **are set in config.py. 
+Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that **start_time **and **end_time **are set in <code>config.py</code>. 
 
     var qa = {  
                 "namespace": "AWS/EC2",       // CloudWatch namespace (string
@@ -60,7 +60,7 @@ And the graph, when passed through Google's Visualization API:
 ![CPUUtilization for two instances](http://mbabineau.github.com/cloudviz/example-hosts-cpu.png)
 
 ### More examples
-Additional examples can be found in examples/, and are written to act as plug-and-play templates.
+Additional examples can be found in <code>examples/</code>, and are written to act as plug-and-play templates.
 
 # Licensing
 Copyright 2010 [Bizo, Inc.](http://bizo.com) (Mike Babineau <[mike@bizo.com](mailto:mike@bizo.com)>)
