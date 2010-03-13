@@ -89,8 +89,8 @@ def main():
         for d in results:
             # Convert timestamps to datetime objects
             d.update({u'Timestamp': datetime.strptime(d[u'Timestamp'],"%Y-%m-%dT%H:%M:%SZ")})
-            # If desired, calculate rate as per-second values
-            if args['calc_rate'] == True and 'Sum' in args['statistics']: d.update({u'Sum': d[u'Sum']/args['period']})
+            # If desired, convert Sum to a per-second Rate
+            if args['calc_rate'] == True and 'Sum' in args['statistics']: d.update({u'Rate': d[u'Sum']/args['period']})
             # Change key names
             keys = d.keys()
             keys.remove('Timestamp')
@@ -105,6 +105,9 @@ def main():
         description[args['prefix']+'Samples'] = ('number', args['prefix']+'Samples')
         description[args['prefix']+'Unit'] = ('string', args['unit']) 
         for stat in args['statistics']:
+            # If Rate is desired, update label accordingly
+            if stat == 'Sum' and args['calc_rate'] == True:
+                stat = 'Rate'
             description[args['prefix']+stat] = ('number', args['prefix']+stat)
             columns.append(args['prefix']+stat)       
     
