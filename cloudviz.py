@@ -38,7 +38,7 @@ from boto.ec2.cloudwatch.metric import Metric
 from django.utils import simplejson
 
 # Local settings
-from config import *
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DEFAULTS
 
 def main():
     # Initialize data description, columns to be returned, and result set
@@ -47,12 +47,12 @@ def main():
     rs = []
     
     # Parse the query string
-    qs = FieldStorage()
-    qa = simplejson.loads(qs.getvalue('qs'))
+    fs = FieldStorage()
+    qs = simplejson.loads(fs.getvalue('qs'))
 
     # Convert tqx to dict; tqx is a set of colon-delimited key/value pairs separated by semicolons
     tqx = {}
-    for s in qs.getvalue('tqx').split(';'):
+    for s in fs.getvalue('tqx').split(';'):
         key = s.split(':')[0]
         value = s.split(':')[1]
         tqx.update({key:value})
@@ -63,29 +63,32 @@ def main():
     # Build option list
     opts = ['unit','metric','namespace','statistics','period', 'dimensions', 'prefix', 'start_time', 'end_time', 'calc_rate', 'region']
     
-    # Set defaults
-    args = DEFAULTS
+    # Set default parameter values from config.py
+    qa = DEFAULTS.copy()
 
     # Set passed args
     for opt in opts:
-        if opt in qa: args[opt] = qa[opt]
-
+        if opt in qs: qa[opt] = qs[opt]
+    
     # Convert timestamps to datetimes if necessary
     for time in ['start_time','end_time']:
-        if type(args[time]) == str or type(args[time]) == unicode: 
-            args[time] = datetime.strptime(args[time].split(".")[0], '%Y-%m-%dT%H:%M:%S')
+        if type(qa[time]) == str or type(qa[time]) == unicode: 
+            qa[time] = datetime.strptime(qa[time].split(".")[0], '%Y-%m-%dT%H:%M:%S')
     
     # Parse, build, and run each CloudWatch query
-    cw_queries = qa['cloudwatch_queries']
+    cw_queries = qs['cloudwatch_queries']
     cw_opts = ['unit', 'metric', 'namespace', 'statistics', 'period', 'dimensions', 'prefix', 'calc_rate', 'region']
     for cw_q in cw_queries:
+        args = qa.copy()
         # Override top-level vars
         for opt in cw_opts:
             if opt in cw_q: args[opt] = cw_q[opt]
         
-        # Convert a region argument to an AWS CloudWatch endpoint
-        if not 'region' in args: args['region'] = 'us-east-1'
-        endpoint = '%s.monitoring.amazonaws.com' % args['region']
+        # Convert a region argument to an AWS CloudWatch endpoint, defaulting to us-east-1
+        if not 'region' in args: 
+            endpoint = 'us-east-1.monitoring.amazonaws.com'
+        else: 
+            endpoint = '%s.monitoring.amazonaws.com' % args['region']
         
         c = connect_cloudwatch(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=endpoint, is_secure=False)
         
