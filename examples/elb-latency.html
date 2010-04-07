@@ -40,9 +40,16 @@ limitations under the License.
                             "cloudwatch_queries":
                             [
                                 {
-                                    "prefix": "DC ",
+                                    "prefix": "us-east-1 LB ",
                                     "dimensions": { "LoadBalancerName": "example-elb-1"},
-                                    "statistics": ["Average"]
+                                    "statistics": ["Average"],
+                                    "region": "us-east-1"
+                                },
+                                {
+                                    "prefix": "us-west-1 LB ",
+                                    "dimensions": { "LoadBalancerName": "example-elb-1"},
+                                    "statistics": ["Average"],
+                                    "region": "us-west-1"
                                 }
                             ]
                          };

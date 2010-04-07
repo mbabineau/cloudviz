@@ -24,6 +24,7 @@ cloudviz expects the following query parameters as a JSON-encoded string passed 
 * __end_time __(date) - end time for queried interval (e.g., _new Date_)
 * __start_time __(date) - start time for queried interval (e.g., _start_time.setDate(end_time.getDate-3)_)
 * __period __(int) - (note: must be 60 or greater) (e.g., _120_)
+* __region __(str) - (optional) AWS region (e.g., _"us-west-1"_; default is "us-east-1")
 * __calc_rate __(bool) - (optional) when set to _True_ and **statistics** includes _"Sum"_, cloudviz converts _Sum_ values to per-second _Rate_ values by dividing _Sum_ by seconds in _period_ (e.g., for _RequestCount_, 150 Requests per period / 60 seconds per period = 2.5 Requests per second)
 * __cloudwatch_queries __(list of dict) - encapsulates each CloudWatch query, allowing for multiple queries to be graphed in a single chart.  Minimally, **cloudwatch_queries **must contain one dict with prefix defined.  Optionally, any of the above parameters may also be defined inside one or more **cloudwatch_queries **
   * __prefix __(str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)

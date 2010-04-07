@@ -25,20 +25,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from sys import exit #for debugging
 from cgi import FieldStorage
 from datetime import datetime
 from operator import itemgetter
+
+# Google Visualization API
 import gviz_api
+
 from boto import connect_cloudwatch
 from boto.ec2.cloudwatch.metric import Metric
+
 from django.utils import simplejson
+
+# Local settings
 from config import *
 
 def main():
-    # Create connection with "is_secure=false"" for App Engine compatability
-    c = connect_cloudwatch(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, is_secure=False)
-
     # Initialize data description, columns to be returned, and result set
     description = { "Timestamp": ("datetime", "Timestamp")}
     columns = ["Timestamp"]
@@ -59,7 +61,7 @@ def main():
     req_id = tqx['reqId']
 
     # Build option list
-    opts = ['unit','metric','namespace','statistics','period', 'dimensions', 'prefix', 'start_time', 'end_time', 'calc_rate']
+    opts = ['unit','metric','namespace','statistics','period', 'dimensions', 'prefix', 'start_time', 'end_time', 'calc_rate', 'region']
     
     # Set defaults
     args = DEFAULTS
@@ -72,15 +74,21 @@ def main():
     for time in ['start_time','end_time']:
         if type(args[time]) == str or type(args[time]) == unicode: 
             args[time] = datetime.strptime(args[time].split(".")[0], '%Y-%m-%dT%H:%M:%S')
-        
+    
     # Parse, build, and run each CloudWatch query
     cw_queries = qa['cloudwatch_queries']
-    cw_opts = ['unit','metric','namespace','statistics','period','dimensions','prefix', 'calc_rate']
+    cw_opts = ['unit', 'metric', 'namespace', 'statistics', 'period', 'dimensions', 'prefix', 'calc_rate', 'region']
     for cw_q in cw_queries:
         # Override top-level vars
         for opt in cw_opts:
             if opt in cw_q: args[opt] = cw_q[opt]
-            
+        
+        # Convert a region argument to an AWS CloudWatch endpoint
+        if not 'region' in args: args['region'] = 'us-east-1'
+        endpoint = '%s.monitoring.amazonaws.com' % args['region']
+        
+        c = connect_cloudwatch(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, host=endpoint, is_secure=False)
+        
         # Pull data from EC2
         results = c.get_metric_statistics(  args['period'], args['start_time'], args['end_time'], 
                                             args['metric'], args['namespace'], args['statistics'],
