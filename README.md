@@ -2,7 +2,9 @@
 This package exposes Amazon CloudWatch as a data source for Google Chart Tools.  With it, you can quickly generate graphs like this:
 ![RequestCount for ELB](http://mbabineau.github.com/cloudviz/example-elb-requestcount.png)
 
-Cloudviz is proudly sponsored by [Bizo](http://bizo.com).  For details on the project's origin, see this [blog post](http://dev.bizo.com/2010/03/introducing-cloudviz.html).
+Cloudviz is proudly sponsored by [Bizo](http://bizo.com).  For details on the cloudviz's origin, see this [blog post](http://dev.bizo.com/2010/03/introducing-cloudviz.html).
+
+If you're looking for easiest way to start graphing CloudWatch data, give [Cloudgrapher](http://www.cloudgrapher.com) a try.  Cloudgrapher is a free CloudWatch dashboard, and is effectively a hosted, batteries-included extension of cloudviz.
 
 ## Getting started
 1. Familiarize yourself with:
