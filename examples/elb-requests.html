@@ -30,6 +30,7 @@ limitations under the License.
                         "calc_rate": true,          // convert "Sum" statistics to per-second values (boolean)
                         "metric": "RequestCount",   // CloudWatch metric (string)
                         "unit": "Count",            // CloudWatch unit (string)
+                        "range": 72,                // Total time range, in hours, for which to pull data (int)
                         "statistics": ["Sum"],      // CloudWatch statistics (list of strings)
                         "dimensions": { "LoadBalancerName": "example-lb"}, // CloudWatch dimensions (dictionary)
                         "cloudwatch_queries":       // (list of dictionaries)

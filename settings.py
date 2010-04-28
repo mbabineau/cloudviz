@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# encoding: utf-8
 """
-config.py
+settings.py
 Contains AWS credentials and default values for expected parameters
 
 --------
@@ -28,7 +26,15 @@ from operator import itemgetter
 #AWS_SECRET_ACCESS_KEY = ""
 
 # Default values to use if a given parameter is not passed
-DEFAULTS = {'calc_rate': False,
-            'period': 60,
-            'start_time': datetime.now() - timedelta(days=1),
-            'end_time': datetime.now()}
+DEFAULTS = {'calc_rate': True,
+            # 'period': 60,
+            # 'start_time': datetime.now() - timedelta(days=1),
+            # 'end_time': datetime.now(),
+            'range': 24,
+            }
+
+## CloudWatch variables
+# The maximum number of datapoints CloudWatch will return for a given query
+CW_MAX_DATA_POINTS = 1440
+# The minimum allowable period
+CW_MIN_PERIOD = 60

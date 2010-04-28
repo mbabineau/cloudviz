@@ -4,7 +4,7 @@ This package exposes Amazon CloudWatch as a data source for Google Chart Tools. 
 
 Cloudviz is proudly sponsored by [Bizo](http://bizo.com).  For details on the cloudviz's origin, see this [blog post](http://dev.bizo.com/2010/03/introducing-cloudviz.html).
 
-If you're looking for easiest way to start graphing CloudWatch data, give [Cloudgrapher](http://www.cloudgrapher.com) a try.  Cloudgrapher is a free CloudWatch dashboard, and is effectively a hosted, batteries-included extension of cloudviz.
+If you're looking for easiest way to start graphing CloudWatch data, check out [Cloudgrapher](http://www.cloudgrapher.com).  Cloudgrapher is a free CloudWatch dashboard, and is effectively a hosted, batteries-included extension of cloudviz.
 
 ## Getting started
 1. Familiarize yourself with:
@@ -13,12 +13,11 @@ If you're looking for easiest way to start graphing CloudWatch data, give [Cloud
 2. Download and install:
    * [boto](http://code.google.com/p/boto/) - a Python interface for Amazon Web Services
    * [gviz_api](http://code.google.com/p/google-visualization-python/) - a Python library for creating Google Visualization API data sources
-3. Copy/move <code>config.py.template</code> to <code>config.py</code>
-4. Set **AWS_ACCESS_KEY_ID **and **AWS_SECRET_ACCESS_KEY **in <code>config.py</code>
-5. Make <code>cloudviz.py</code> web-accessible using your favorite HTTP server
+3. Set **AWS_ACCESS_KEY_ID **and **AWS_SECRET_ACCESS_KEY **in <code>settings.py</code>
+4. Make <code>cloudviz.py</code> web-accessible using your favorite HTTP server
 
 # Using cloudviz
-cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in <code>config.py</code>:
+cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in <code>settings.py</code>:
 
 * __namespace __(str) - CloudWatch namespace (e.g., _"AWS/ELB"_)
 * __metric __(str) - CloudWatch metric (e.g., _"Latency"_)
@@ -27,14 +26,18 @@ cloudviz expects the following query parameters as a JSON-encoded string passed 
 * __dimensions __(dict of str) - CloudWatch dimensions (e.g., _{"LoadBalancerName": "example-lb"}_)
 * __end_time __(date) - end time for queried interval (e.g., _new Date_)
 * __start_time __(date) - start time for queried interval (e.g., _start_time.setDate(end_time.getDate-3)_)
-* __period __(int) - (note: must be 60 or greater) (e.g., _120_)
+* __range __(int) - desired time range, in hours, for queried interval (e.g., _24_).  Note: _range_ may be substituted for _start_time_, _end_time_, or both:
+  * if _range_ and _end_time_ are specified, _start_time_ is calculated as ( _end_time_ - _range_ )
+  * if _range_ and _start_time_ are specified, _end_time_ is calculated as ( _start_time_ + _range_ )
+  * if only _range_ is specified, _end_time_ is set to the current time and _start_time_ is calculated as ( current time - _range_ )  
+* __period __(int) - (optional) CloudWatch period (e.g., _120_).  Notes: must be a multiple of 60; if _period_ is not specified, it will be automatically calculated as the smallest valid value (resulting in the most data points being returned) for the queried interval.
 * __region __(str) - (optional) AWS region (e.g., _"us-west-1"_; default is "us-east-1")
 * __calc_rate __(bool) - (optional) when set to _True_ and **statistics** includes _"Sum"_, cloudviz converts _Sum_ values to per-second _Rate_ values by dividing _Sum_ by seconds in _period_ (e.g., for _RequestCount_, 150 Requests per period / 60 seconds per period = 2.5 Requests per second)
 * __cloudwatch_queries __(list of dict) - encapsulates each CloudWatch query, allowing for multiple queries to be graphed in a single chart.  Minimally, **cloudwatch_queries **must contain one dict with prefix defined.  Optionally, any of the above parameters may also be defined inside one or more **cloudwatch_queries **
   * __prefix __(str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)
 
 ### Example: Graphing CPU utilization of two instances
-Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that **start_time **and **end_time **are set in <code>config.py</code>. 
+Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that **start_time **and **end_time **are set in <code>settings.py</code>. 
 
     var qa = {  
                 "namespace": "AWS/EC2",       // CloudWatch namespace (string
