@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """
 cloudviz.py
 This script exposes Amazon EC2 CloudWatch as a data source for the Google Visualization API
