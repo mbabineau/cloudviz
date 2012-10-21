@@ -130,7 +130,7 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         # Format/transform results
         for d in results:
             # Convert timestamps to datetime objects
-            d.update({u'Timestamp': datetime.strptime(d[u'Timestamp'],"%Y-%m-%dT%H:%M:%SZ")})
+            d.update({u'Timestamp': d[u'Timestamp']})
             # If desired, convert Sum to a per-second Rate
             if args['calc_rate'] == True and 'Sum' in args['statistics']: d.update({u'Rate': d[u'Sum']/args['period']})
             # Change key names
