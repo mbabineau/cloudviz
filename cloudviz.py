@@ -119,9 +119,9 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         
         # Use AWS keys if provided, otherwise just let the boto look it up
         if aws_access_key_id and aws_secret_access_key:
-            c = connect_cloudwatch(aws_access_key_id, aws_secret_access_key, host=endpoint, is_secure=False)
+            c = connect_cloudwatch(aws_access_key_id, aws_secret_access_key, is_secure=False)
         else:
-            c = connect_cloudwatch(host=endpoint, is_secure=False)
+            c = connect_cloudwatch(is_secure=False)
         
         # Pull data from EC2
         results = c.get_metric_statistics(  args['period'], args['start_time'], args['end_time'], 
