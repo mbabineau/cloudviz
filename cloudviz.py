@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """
 cloudviz.py
 This script exposes Amazon EC2 CloudWatch as a data source for the Google Visualization API
@@ -117,9 +119,9 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         
         # Use AWS keys if provided, otherwise just let the boto look it up
         if aws_access_key_id and aws_secret_access_key:
-            c = connect_cloudwatch(aws_access_key_id, aws_secret_access_key, host=endpoint, is_secure=False)
+            c = connect_cloudwatch(aws_access_key_id, aws_secret_access_key, is_secure=False)
         else:
-            c = connect_cloudwatch(host=endpoint, is_secure=False)
+            c = connect_cloudwatch(is_secure=False)
         
         # Pull data from EC2
         results = c.get_metric_statistics(  args['period'], args['start_time'], args['end_time'], 
@@ -128,7 +130,7 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         # Format/transform results
         for d in results:
             # Convert timestamps to datetime objects
-            d.update({u'Timestamp': datetime.strptime(d[u'Timestamp'],"%Y-%m-%dT%H:%M:%SZ")})
+            d.update({u'Timestamp': d[u'Timestamp']})
             # If desired, convert Sum to a per-second Rate
             if args['calc_rate'] == True and 'Sum' in args['statistics']: d.update({u'Rate': d[u'Sum']/args['period']})
             # Change key names
