@@ -36,7 +36,7 @@ from django.utils import simplejson
 # Google Visualization API
 import gviz_api
 
-from boto import connect_cloudwatch
+import boto.ec2.cloudwatch
 from boto.ec2.cloudwatch.metric import Metric
 
 from settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DEFAULTS, CW_MAX_DATA_POINTS, CW_MIN_PERIOD
@@ -111,17 +111,16 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         if args['period'] < CW_MIN_PERIOD: 
             args['period'] = CW_MIN_PERIOD
         
-        # Convert a region argument to an AWS CloudWatch endpoint, defaulting to us-east-1
+        # Defaulting AWS region to us-east-1
         if not 'region' in args: 
-            endpoint = 'us-east-1.monitoring.amazonaws.com'
-        else: 
-            endpoint = '%s.monitoring.amazonaws.com' % args['region']
+            args['region'] = 'us-east-1'
         
         # Use AWS keys if provided, otherwise just let the boto look it up
         if aws_access_key_id and aws_secret_access_key:
-            c = connect_cloudwatch(aws_access_key_id, aws_secret_access_key, is_secure=False)
+            c = boto.ec2.cloudwatch.connect_to_region(  args['region'], aws_access_key_id=AWS_ACCESS_KEY_ID, 
+                                                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY, is_secure=False)
         else:
-            c = connect_cloudwatch(is_secure=False)
+            boto.ec2.cloudwatch.connect_to_region(args['region'], is_secure=False)
         
         # Pull data from EC2
         results = c.get_metric_statistics(  args['period'], args['start_time'], args['end_time'], 
