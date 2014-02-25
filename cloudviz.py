@@ -9,6 +9,7 @@ Requirements:
 - boto, a Python interface for Amazon Web Services (http://code.google.com/p/boto/)
 - gviz_api, a Python library for creating Google Visualization API data sources 
   (http://code.google.com/p/google-visualization-python/)
+- pytz, world timezone definitions for Python (http://pytz.sourceforge.net/)
 
 Cloudviz project maintained here: http://github.com/mbabineau/cloudviz
 --------
@@ -32,6 +33,8 @@ import cgi
 import operator
 from datetime import datetime, timedelta
 from django.utils import simplejson
+from pytz import timezone
+import pytz
 
 # Google Visualization API
 import gviz_api
@@ -53,10 +56,12 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
     description = { "Timestamp": ("datetime", "Timestamp")}
     columns = ["Timestamp"]
     rs = []
+    current_timezone = timezone('UTC')
+    utc = pytz.utc
 
     # Build option list
     opts = ['unit','metric','namespace','statistics','period', 'dimensions', 'prefix', 
-            'start_time', 'end_time', 'calc_rate', 'region', 'range']
+            'start_time', 'end_time', 'calc_rate', 'region', 'range', 'timezone']
     
     # Set default parameter values from config.py
     qa = DEFAULTS.copy()
@@ -84,6 +89,9 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         qa['end_time'] = datetime.now()
         qa['start_time'] = qa['end_time'] - timedelta(hours=qa['range'])
     
+    if 'timezone' in qa:
+        current_timezone = timezone(qa['timezone'])
+
     # Parse, build, and run each CloudWatch query
     cloudwatch_opts = ['unit', 'metric', 'namespace', 'statistics', 'period', 'dimensions', 'prefix', 'calc_rate', 'region']
     for cloudwatch_query in cloudviz_query['cloudwatch_queries']:
@@ -130,6 +138,9 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
         for d in results:
             # Convert timestamps to datetime objects
             d.update({u'Timestamp': d[u'Timestamp']})
+            utc_dt = utc.localize(d[u'Timestamp'])
+            loc_dt = utc_dt.astimezone(current_timezone)
+            d['Timestamp'] = loc_dt
             # If desired, convert Sum to a per-second Rate
             if args['calc_rate'] == True and 'Sum' in args['statistics']: d.update({u'Rate': d[u'Sum']/args['period']})
             # Change key names
