@@ -20,22 +20,22 @@ If you're looking for easiest way to start graphing CloudWatch data, check out [
 # Using cloudviz
 cloudviz expects the following query parameters as a JSON-encoded string passed to a qs parameter.  Default values for each parameter may be set in <code>settings.py</code>:
 
-* __namespace __(str) - CloudWatch namespace (e.g., _"AWS/ELB"_)
-* __metric __(str) - CloudWatch metric (e.g., _"Latency"_)
-* __unit __(str) - CloudWatch unit (e.g., _"Seconds"_)
-* __statistics __(list of str) - CloudWatch statistics (e.g., _["Average","Maximum"]_)
-* __dimensions __(dict of str) - CloudWatch dimensions (e.g., _{"LoadBalancerName": "example-lb"}_)
-* __end_time __(date) - end time for queried interval (e.g., _new Date_)
-* __start_time __(date) - start time for queried interval (e.g., _start_time.setDate(end_time.getDate-3)_)
-* __range __(int) - desired time range, in hours, for queried interval (e.g., _24_).  Note: _range_ may be substituted for _start_time_, _end_time_, or both:
-  * if _range_ and _end_time_ are specified, _start_time_ is calculated as ( _end_time_ - _range_ )
-  * if _range_ and _start_time_ are specified, _end_time_ is calculated as ( _start_time_ + _range_ )
-  * if only _range_ is specified, _end_time_ is set to the current time and _start_time_ is calculated as ( current time - _range_ )  
-* __period __(int) - (optional) CloudWatch period (e.g., _120_).  Notes: must be a multiple of 60; if _period_ is not specified, it will be automatically calculated as the smallest valid value (resulting in the most data points being returned) for the queried interval.
-* __region __(str) - (optional) AWS region (e.g., _"us-west-1"_; default is "us-east-1")
-* __calc_rate __(bool) - (optional) when set to _True_ and **statistics** includes _"Sum"_, cloudviz converts _Sum_ values to per-second _Rate_ values by dividing _Sum_ by seconds in _period_ (e.g., for _RequestCount_, 150 Requests per period / 60 seconds per period = 2.5 Requests per second)
-* __cloudwatch_queries __(list of dict) - encapsulates each CloudWatch query, allowing for multiple queries to be graphed in a single chart.  Minimally, **cloudwatch_queries **must contain one dict with prefix defined.  Optionally, any of the above parameters may also be defined inside one or more **cloudwatch_queries **
-  * __prefix __(str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)
+* `namespace` (str) - CloudWatch namespace (e.g., _"AWS/ELB"_)
+* `metric` (str) - CloudWatch metric (e.g., _"Latency"_)
+* `unit` (str) - CloudWatch unit (e.g., _"Seconds"_)
+* `statistics` (list of str) - CloudWatch statistics (e.g., _["Average","Maximum"]_)
+* `dimensions` (dict of str) - CloudWatch dimensions (e.g., _{"LoadBalancerName": "example-lb"}_)
+* `end_time` (date) - end time for queried interval (e.g., _new Date_)
+* `start_time` (date) - start time for queried interval (e.g., _start_time.setDate(end_time.getDate-3)_)
+* `range` (int) - desired time range, in hours, for queried interval (e.g., _24_).  Note: `range` may be substituted for `start_time`, `end_time`, or both:
+  * if `range` and `end_time` are specified, `start_time` is calculated as ( `end_time` - `range` )
+  * if `range` and `start_time` are specified, `end_time` is calculated as ( `start_time` + `range` )
+  * if only `range` is specified, `end_time` is set to the current time and `start_time` is calculated as ( current time - `range` )  
+* `period` (int) - (optional) CloudWatch period (e.g., _120_).  Notes: must be a multiple of 60; if `period` is not specified, it will be automatically calculated as the smallest valid value (resulting in the most data points being returned) for the queried interval.
+* `region` (str) - (optional) AWS region (e.g., _"us-west-1"_; default is "us-east-1")
+* `calc_rate` (bool) - (optional) when set to _True_ and `statistics` includes _"Sum"_, cloudviz converts _Sum_ values to per-second _Rate_ values by dividing _Sum_ by seconds in `period` (e.g., for _RequestCount_, 150 Requests per period / 60 seconds per period = 2.5 Requests per second)
+* `cloudwatch_queries` (list of dict) - encapsulates each CloudWatch query, allowing for multiple queries to be graphed in a single chart.  Minimally, `cloudwatch_queries` must contain one dict with prefix defined.  Optionally, any of the above parameters may also be defined inside one or more `cloudwatch_queries`
+  * `prefix` (str) - text identifier for data returned by a single CloudWatch query. This is prepended to the chart label of each data series (e.g., _"My LB "_)
 
 ### Example: Graphing CPU utilization of two instances
 Here's a JavaScript snippet for building a URL to pass to cloudviz.  See examples/host-cpu.html for the rest of the code.  Note that **start_time **and **end_time **are set in <code>settings.py</code>. 
