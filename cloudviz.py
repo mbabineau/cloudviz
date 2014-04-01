@@ -128,7 +128,7 @@ def get_cloudwatch_data(cloudviz_query, request_id, aws_access_key_id=None, aws_
             c = boto.ec2.cloudwatch.connect_to_region(  args['region'], aws_access_key_id=AWS_ACCESS_KEY_ID, 
                                                         aws_secret_access_key=AWS_SECRET_ACCESS_KEY, is_secure=False)
         else:
-            boto.ec2.cloudwatch.connect_to_region(args['region'], is_secure=False)
+            c = boto.ec2.cloudwatch.connect_to_region(args['region'], is_secure=False)
         
         # Pull data from EC2
         results = c.get_metric_statistics(  args['period'], args['start_time'], args['end_time'], 
