@@ -9,10 +9,10 @@ If you're looking for easiest way to start graphing CloudWatch data, check out [
 ## Getting started
 1. Familiarize yourself with:
    * [Amazon CloudWatch](http://aws.amazon.com/cloudwatch/) ([docs](http://docs.amazonwebservices.com/AmazonCloudWatch/latest/DeveloperGuide/))
-   * [Google Visualization API](http://code.google.com/apis/visualization/interactive_charts.html) ([docs](http://code.google.com/apis/visualization/documentation/using_overview.html))
+   * [Google Visualization API](https://developers.google.com/chart/) ([docs](https://developers.google.com/chart/interactive/docs/))
 2. Download and install:
-   * [boto](http://code.google.com/p/boto/) - a Python interface for Amazon Web Services
-   * [gviz_api](http://code.google.com/p/google-visualization-python/) - a Python library for creating Google Visualization API data sources
+   * [boto](https://github.com/boto/boto) - a Python interface for Amazon Web Services
+   * [gviz_api](https://github.com/google/google-visualization-python) - a Python library for creating Google Visualization API data sources
    * [pytz](https://pypi.python.org/pypi/pytz/) - world timezone definitions
 3. Set **AWS_ACCESS_KEY_ID **and **AWS_SECRET_ACCESS_KEY **in <code>settings.py</code>
 4. Make <code>cloudviz.py</code> web-accessible using your favorite HTTP server
